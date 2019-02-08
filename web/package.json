@@ -1,0 +1,21 @@
+{
+  "name": "content-explorer-web",
+  "version": "0.1.0",
+  "license": "MIT",
+  "homepage": "https://frantracer.github.io/content-explorer/",
+  "devDependencies": {
+    "gh-pages": "^1.1.0",
+    "react-scripts": "^1.0.17"
+  },
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  },
+  "scripts": {
+    "start": "PORT=80 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  }
+}
