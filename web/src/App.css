@@ -1,3 +1,14 @@
+:root {
+  --sidebar-width: 20%;
+}
+
+@media (min-width: 300px) {
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (min-width: 600px) {
   .grid {
     display: grid;
@@ -28,14 +39,19 @@
 }
 
 .sidebar {
-  width: 20%;
+  width: var(--sidebar-width);
+  background-color: lightgrey;
 }
 
 .main-view {
-  margin-left: 20%;
+  margin-left: var(--sidebar-width);
 }
 
-.menu-logo {
-  width: 70%;
-  vertical-align: middle;
+figure.menu-logo {
+  text-align: center;
+  margin: 5px;
+}
+
+figure.menu-logo > img {
+  width: 50%;
 }
