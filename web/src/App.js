@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
+import MarkersMenu from "./components/MarkersMenu.js"
+import MainView from "./components/MainView.js"
+
 import "./App.css";
 
 class App extends Component {
-    render() {
-        const pathname = window.location.pathname
-        return (
-            <div>
-            Hello world
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <MarkersMenu />
+        <MainView />
+      </div>
+    );
+  }
 }
 
 export default App;
