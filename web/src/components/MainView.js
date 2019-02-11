@@ -5,7 +5,7 @@ import GridView from "./GridView.js"
 class MainView extends Component {
   render() {
     return (
-      <div class="main-view">
+      <div className="main-view">
         <UserMenu />
         <GridView />
       </div>

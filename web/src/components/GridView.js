@@ -1,41 +1,30 @@
 import React, { Component } from 'react';
+import ContentItem from './ContentItem.js';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+  return {
+      items: state.common.items
+  }
+};
 
 class GridView extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div>
-        <div class="grid">
-          <figure class="grid-item">
-            <img class="grid-img" src="http://placekitten.com/g/350/200" alt="a kitten"/>
-          </figure>
-          <figure class="grid-item">
-            <img class="grid-img" src="http://placekitten.com/g/350/200" alt="a kitten"/>
-          </figure>
-          <figure class="grid-item">
-            <img class="grid-img" src="http://placekitten.com/g/350/200" alt="a kitten"/>
-          </figure>
-          <figure class="grid-item">
-            <img class="grid-img" src="http://placekitten.com/g/350/200" alt="a kitten"/>
-          </figure>
-          <figure class="grid-item">
-            <img class="grid-img" src="http://placekitten.com/g/350/200" alt="a kitten"/>
-          </figure>
-          <figure class="grid-item">
-            <img class="grid-img" src="http://placekitten.com/g/350/200" alt="a kitten"/>
-          </figure>
-          <figure class="grid-item">
-            <iframe width="100%" src="https://www.youtube.com/embed/uBFKXLxKMDY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
-          </figure>
-          <figure class="grid-item">
-            <iframe width="100%" src="https://www.youtube.com/embed/uBFKXLxKMDY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
-          </figure>
-          <figure class="grid-item">
-            <iframe width="100%" src="https://www.youtube.com/embed/uBFKXLxKMDY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
-          </figure>
+        <div className="grid">
+          { this.props.items.map(function(item, index) {
+            return <ContentItem key={index} title={item.title} src={item.src} type={item.type}/>
+          }) }
         </div>
       </div>
     );
   }
 }
 
-export default GridView;
+export default connect(mapStateToProps, null)(GridView);
