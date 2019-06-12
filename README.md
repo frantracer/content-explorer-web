@@ -4,15 +4,15 @@ Create docker images:
 
 `sudo su`
 
-`docker build -f Dockerfile-web -t content-explorer-web:latest .`
+`docker build -t content-explorer-web:latest .`
 
-`docker create -it --name content-web-container -p 8080:80 -p 8443:443 -v $(pwd):/usr/src/app content-explorer-web /bin/bash`
+`docker create -it --name content-explorer-web -p 8080:80 -p 8443:443 -v $(pwd):/usr/src/app content-explorer-web /bin/bash`
 
 # Development environment
 
 Launch container
 
-`docker start -i content-web-container`
+`docker start -i content-explorer-web`
 
 `npm install`
 
@@ -26,7 +26,7 @@ http://localhost:8080
 
 Launch container
 
-`docker start -i content-web-container`
+`docker start -i content-explorer-web`
 
 Deploy the project in github.io
 
