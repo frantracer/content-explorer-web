@@ -1,16 +1,40 @@
-export const loadContentItems = () => {
-  const item_array = [
-    { title: "title10", src: "https://www.youtube.com/embed/9iDncS9-2vI", type: "youtube" },
-    { title: "title20", src: "https://www.youtube.com/embed/uBFKXLxKMDY", type: "youtube" },
-    { title: "title30", src: "https://www.youtube.com/embed/NxvQPzrg2Wg", type: "youtube" },
-    { title: "a kitten", src: "http://placekitten.com/g/350/200", type: "image" }
-  ];
+const axios = require('axios');
+
+export const setContentItems = (item_array) => {
   return { type: 'UPDATE_CONTENT', items : item_array };
 }
 
+export const loadContentItems = () => {
+
+  return function (dispatch) {
+
+    return axios.request(
+      'http://localhost:3000/api/contentmarks',
+      {
+        method: 'get',
+        headers: {
+          'sid': 'mysid'
+        }
+      }
+    ).then(
+      response => {
+        // Parse API response
+        const item_array = response.data.items.flatMap(
+          item => item.resources.flatMap(
+            resource => resource.feeds.map(
+              feed => { return { title: feed.name, src: feed.link, type: resource.type } } )))
+
+        dispatch(setContentItems(item_array))
+      },
+      error => console.log('An error occurred.', error)
+    );
+
+  }
+
+}
+
 export const unloadContentItems = () => {
-  const item_array = [];
-  return { type: 'UPDATE_CONTENT', items : item_array };
+  return setContentItems([]);
 }
 
 export const loadCredentials = (credentials) => {
