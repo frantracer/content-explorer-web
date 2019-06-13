@@ -21,17 +21,3 @@ Launch container
 The web will be available at:
 
 http://localhost:8080
-
-# Production environment
-
-Launch container
-
-`docker start -i content-explorer-web`
-
-Deploy the project in github.io
-
-`npm run deploy`
-
-The web will be available at:
-
-https://frantracer.github.io/content-explorer/
