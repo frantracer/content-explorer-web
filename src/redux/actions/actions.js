@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-export const setContentItems = (item_array) => {
-  return { type: 'UPDATE_CONTENT', items : item_array };
+export const setContentItems = (topics, itemsPerTopic) => {
+  return { type: 'UPDATE_CONTENT', topics : topics, itemsPerTopic: itemsPerTopic };
 }
 
 export const loadContentItems = () => {
@@ -19,12 +19,24 @@ export const loadContentItems = () => {
     ).then(
       response => {
         // Parse API response
-        const item_array = response.data.items.flatMap(
-          item => item.resources.flatMap(
-            resource => resource.feeds.map(
-              feed => { return { title: feed.name, src: feed.link, type: resource.type } } )))
+        const items = response.data.items
 
-        dispatch(setContentItems(item_array))
+        const topics = items.map( item => item.name )
+
+        const itemsPerTopic = {}
+        items.forEach(
+          item => {
+            let name = item.name
+            let items = item.resources.flatMap(
+              resource => resource.feeds.map(
+                feed => { return { title: feed.name, src: feed.link, type: resource.type } }
+              )
+            )
+            itemsPerTopic[name] = items
+          }
+        )
+
+        dispatch(setContentItems(topics, itemsPerTopic))
       },
       error => console.log('An error occurred.', error)
     );
@@ -34,7 +46,11 @@ export const loadContentItems = () => {
 }
 
 export const unloadContentItems = () => {
-  return setContentItems([]);
+  return setContentItems([], {});
+}
+
+export const setSelectedTopic = (newTopic) => {
+  return { type: 'UPDATE_SELECTED_TOPIC', newTopic: newTopic };
 }
 
 export const loadCredentials = (credentials) => {

@@ -1,14 +1,21 @@
 const defaultState = {
-  items : []
+  topicSelected: "Summary",
+  topics: [],
+  itemsPerTopic : {}
 };
 
 export default (state = defaultState, action) => {
   switch (action.type) {
     case 'UPDATE_CONTENT':
-      console.log("Update content")
       return {
-        ...defaultState,
-        items: action.items
+        ...state,
+        topics: (action.topics.length > 0 ? ["Summary"].concat(action.topics) : []),
+        itemsPerTopic: action.itemsPerTopic
+      }
+    case 'UPDATE_SELECTED_TOPIC':
+      return {
+        ...state,
+        topicSelected: action.newTopic
       }
     default:
       console.log("Unknown Common action")
