@@ -16,20 +16,13 @@ const mapDispatchToProps = dispatch => {
   return {
     loadContentItems : () => { dispatch(loadContentItems()) },
     unloadContentItems : () => { dispatch(unloadContentItems()) },
-    loadCredentials : (token, id) => { dispatch(loadCredentials(token, id)) }
+    loadCredentials : (token, id, name) => { dispatch(loadCredentials(token, id, name)) }
   }
 }
 
 class UserMenu extends Component {
 
-  constructor(props) {
-    super(props);
-    this.loginSuccess = this.loginSuccess.bind(this);
-    this.loginFailure = this.loginFailure.bind(this);
-    this.logoutSession = this.logoutSession.bind(this);
-  }
-
-  loginSuccess(response) {
+  googleLoginSuccess = (response) => {
     console.log("Login Success");
 
     console.log(response);
@@ -38,24 +31,28 @@ class UserMenu extends Component {
     const id = response.googleId;
     const name = response.profileObj.givenName;
 
+    this.loginSuccess(token, id, name);
+  }
+
+  loginSuccess = (token, id, name) => {
     this.props.loadCredentials({token: token, id: id, name: name});
 
     this.props.loadContentItems();
   }
 
-  loginFailure(response) {
+  loginFailure = (response) => {
     console.log("Login Failure");
     console.log(response);
   }
 
-  logoutSession(response) {
+  logoutSession = (response) => {
     console.log("Logout Success");
     this.props.unloadContentItems();
     this.props.loadCredentials({token: null, id: null, name: null});
   }
 
   render() {
-  console.log(this.props);
+    console.log(this.props);
     let button;
     let text = "";
     if(this.props.credentials.id === null) {
@@ -63,7 +60,7 @@ class UserMenu extends Component {
         <GoogleLogin
           clientId={clientId}
           buttonText="Login"
-          onSuccess={this.loginSuccess}
+          onSuccess={this.googleLoginSuccess}
           onFailure={this.loginFailure}
           scope="https://www.googleapis.com/auth/youtube.readonly"
         />;
@@ -76,6 +73,7 @@ class UserMenu extends Component {
         />;
       text = "Welcome " + this.props.credentials.name + "!";
     }
+
     return (
       <div>
         {button} {text}
