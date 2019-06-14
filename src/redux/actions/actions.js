@@ -1,4 +1,8 @@
 const axios = require('axios');
+const connection = axios.create({
+  baseURL: process.env.REACT_APP_SERVER_ADDRESS,
+  timeout: 1000
+});
 
 export const setContentItems = (topics, itemsPerTopic) => {
   return { type: 'UPDATE_CONTENT', topics : topics, itemsPerTopic: itemsPerTopic };
@@ -8,9 +12,9 @@ export const loadContentItems = () => {
 
   return function (dispatch) {
 
-    return axios.request(
-      'http://localhost:3000/api/contentmarks',
+    return connection.request(
       {
+        url: '/contentmarks',
         method: 'get',
         headers: {
           'sid': 'mysid'
