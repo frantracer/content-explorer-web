@@ -1,6 +1,8 @@
 const defaultState = {
   credentials: {
-    token: null, id: null, name: null
+    sid: null,
+    picture_url: null,
+    name: null
   }
 };
 
@@ -9,8 +11,11 @@ export default (state = defaultState, action) => {
     case 'UPDATE_CREDENTIALS':
       console.log("Update credentials")
       return {
-        ...defaultState,
-        credentials: { token: action.credentials.token, id: action.credentials.id, name: action.credentials.name }
+        ...state,
+        credentials: { 
+          sid: action.credentials.sid,
+          picture_url: action.credentials.picture_url,
+          name: action.credentials.name }
       }
     default:
       console.log("Unknown Authentication action")

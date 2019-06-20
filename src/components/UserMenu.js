@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
-import { loadContentItems, unloadContentItems, loadCredentials } from '../redux/actions/actions.js';
+import { GoogleLogin } from 'react-google-login';
+import { loadContentItems, unloadContentItems, loadCredentials, validateGoogleCode } from '../redux/actions/actions.js';
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
@@ -16,7 +16,8 @@ const mapDispatchToProps = dispatch => {
   return {
     loadContentItems : () => { dispatch(loadContentItems()) },
     unloadContentItems : () => { dispatch(unloadContentItems()) },
-    loadCredentials : (token, id, name) => { dispatch(loadCredentials(token, id, name)) }
+    validateGoogleCode : (code) => { dispatch(validateGoogleCode(code)) },
+    loadCredentials : (credentials) => { dispatch(loadCredentials(credentials)) }
   }
 }
 
@@ -27,17 +28,9 @@ class UserMenu extends Component {
 
     console.log(response);
 
-    const token = response.Zi.access_token;
-    const id = response.googleId;
-    const name = response.profileObj.givenName;
+    const code = response.code;
 
-    this.loginSuccess(token, id, name);
-  }
-
-  loginSuccess = (token, id, name) => {
-    this.props.loadCredentials({token: token, id: id, name: name});
-
-    this.props.loadContentItems();
+    this.props.validateGoogleCode(code);
   }
 
   loginFailure = (response) => {
@@ -48,35 +41,34 @@ class UserMenu extends Component {
   logoutSession = (response) => {
     console.log("Logout Success");
     this.props.unloadContentItems();
-    this.props.loadCredentials({token: null, id: null, name: null});
+    this.props.loadCredentials({sid: null, picture_url: null, name: null});
   }
 
   render() {
     console.log(this.props);
     let button;
-    let text = "";
-    if(this.props.credentials.id === null) {
+    let text;
+    let image;
+    if(this.props.credentials.name === null) {
       button =
         <GoogleLogin
           clientId={clientId}
           buttonText="Login"
           onSuccess={this.googleLoginSuccess}
           onFailure={this.loginFailure}
+          accessType="online"
+          responseType="code"
           scope="https://www.googleapis.com/auth/youtube.readonly"
         />;
     } else {
-      button =
-        <GoogleLogout
-          clientId={clientId}
-          buttonText="Logout"
-          onLogoutSuccess={this.logoutSession}
-        />;
       text = "Welcome " + this.props.credentials.name + "!";
+      button = <button onClick={this.logoutSession}>Logout</button>;
+      image = <img src={this.props.credentials.picture_url} alt="" width="50" height="50" align="right"></img>
     }
 
     return (
       <div>
-        {button} {text}
+        {button} {text} {image}
       </div>
     );
   }
