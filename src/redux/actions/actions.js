@@ -27,16 +27,14 @@ export const loadContentItems = () => {
 
         const topics = items.map( item => item.name )
 
-        const itemsPerTopic = {}
+        var itemsPerTopic = {}
         items.forEach(
           item => {
             let name = item.name
-            let items = item.resources.flatMap(
-              resource => resource.feeds.map(
-                feed => { return { title: feed.name, src: feed.link, type: resource.type } }
-              )
-            )
-            itemsPerTopic[name] = items
+            let feeds = item.feeds.map((feed) => {
+              return { title: feed.title, src: feed.link, type: feed.type }
+            })
+            itemsPerTopic[name] = feeds
           }
         )
 
