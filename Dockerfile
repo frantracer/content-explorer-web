@@ -1,19 +1,24 @@
 FROM node:10-alpine
 
-# Define environment, PRO or DEV
-ARG PROJECT_ENV=PRO
-
 WORKDIR /usr/src/app
 
 EXPOSE 80 443
 
-# In production download and install packages
+# Compile web
 COPY . /usr/src/app
 RUN npm install
+RUN npm run build
 
-# Tools for development
-RUN if [[ $PROJECT_ENV = "DEV" ]]; \
-  then apk update && apk upgrade && apk add bash; \
-  fi
+# Install and configure nginx
+RUN apk update && apk upgrade && apk add nginx
+RUN mkdir -p /run/nginx
 
-CMD npm start
+COPY goods/nginx.conf /etc/nginx/nginx.conf
+
+RUN ln -s /usr/src/app/build /var/www/html
+
+# Create external configuration directory
+RUN mkdir -p /etc/linkurator/config
+
+# Launch nginx
+CMD nginx

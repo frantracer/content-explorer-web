@@ -2,7 +2,7 @@
   "name": "content-explorer-web",
   "version": "0.1.0",
   "license": "MIT",
-  "homepage": "https://frantracer.github.io/content-explorer/",
+  "homepage": ".",
   "devDependencies": {
     "react-scripts": "^3.0.1"
   },

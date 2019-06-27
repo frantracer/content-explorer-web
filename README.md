@@ -2,27 +2,44 @@
 
 Download project
 
-`git clone https://github.com/frantracer/content-explorer-web`
+```
+export APP=content-explorer-web
+git clone https://github.com/frantracer/$APP
+```
 
-Set server configuration and keys in .env file
+Create directory with the following files:
 
-# Development environment
+```
+- config
+|- cert.pem
+|- key.pem
+|- web.env
+```
 
 Build docker image
 
-`docker build --build-arg PROJECT_ENV=DEV -t content-explorer-web:latest .`
+```
+cd $APP
+cp ../config/web.env .env
+sudo docker build -t $APP:latest .
+```
 
-Create container
 
-`docker create -it --name content-explorer-web -p 8080:80 -p 8443:443 -v $(pwd):/usr/src/app content-explorer-web /bin/bash`
+# Development environment
 
-Start and attach to the container
+Create container and run the container
 
-`docker start -i content-explorer-web`
+`sudo docker run -it --name $APP -v $(pwd)/../config:/etc/linkurator/config -v $(pwd):/usr/src/app -p 8080:80 -p 8443:443 $APP /bin/sh`
 
 Download packages
 
 `npm install`
+
+Copy certificates and configuration for web service
+
+```
+cat /etc/linkurator/config/key.pem /etc/linkurator/config/cert.pem > ./node_modules/webpack-dev-server/ssl/server.pem
+```
 
 Start application
 
@@ -30,14 +47,11 @@ Start application
 
 The web will be available at:
 
-http://localhost:8080
+https://localhost:8443
+
 
 # Production environment
 
-Build docker image
-
-`docker build -t content-explorer-web:latest .`
-
 Create and launch container
 
-`docker run -d --name content-explorer-web -p 8080:80 -p 8443:443 content-explorer-web`
+`sudo docker run -d --name $APP -v $(pwd)/../config:/etc/linkurator/config -p 8080:80 -p 8443:443 $APP`
