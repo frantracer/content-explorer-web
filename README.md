@@ -3,8 +3,7 @@
 Download project
 
 ```
-export APP=content-explorer-web
-git clone https://github.com/frantracer/$APP
+git clone https://github.com/frantracer/content-explorer-web
 ```
 
 Create directory with the following files:
@@ -16,34 +15,16 @@ Create directory with the following files:
 |- web.env
 ```
 
-Build docker image
-
-```
-cd $APP
-cp ../config/web.env .env
-sudo docker build -t $APP:latest .
-```
+Install docker (https://docs.docker.com/install/)
 
 
 # Development environment
 
-Create container and run the container
-
-`sudo docker run -it --name $APP -v $(pwd)/../config:/etc/linkurator/config -v $(pwd):/usr/src/app -p 8080:80 -p 8443:443 $APP /bin/sh`
-
-Download packages
-
-`npm install`
-
-Copy certificates and configuration for web service
+Run the following command and follow instructions:
 
 ```
-cat /etc/linkurator/config/key.pem /etc/linkurator/config/cert.pem > ./node_modules/webpack-dev-server/ssl/server.pem
+python deploy.py --config ../config/ --env DEV
 ```
-
-Start application
-
-`npm start`
 
 The web will be available at:
 
@@ -52,6 +33,8 @@ https://localhost:8443
 
 # Production environment
 
-Create and launch container
+Run the following command:
 
-`sudo docker run -d --name $APP -v $(pwd)/../config:/etc/linkurator/config -p 8080:80 -p 8443:443 $APP`
+```
+python deploy.py --config ../config/ --env PRO
+```
