@@ -10,7 +10,7 @@ class GridView extends Component {
         <div className="grid">
           {
             this.props.items.map( (item, index) => {
-              return <ContentItem key={index} title={item.title} src={item.src} type={item.type}/>
+              return <ContentItem key={index} title={item.title} src={item.src} type={item.type} thumbnail={item.thumbnail}/>
             })
           }
         </div>

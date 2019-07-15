@@ -32,7 +32,11 @@ export const loadContentItems = () => {
           item => {
             let name = item.name
             let feeds = item.feeds.map((feed) => {
-              return { title: feed.title, src: feed.link, type: feed.type }
+              return { 
+                title: feed.title,
+                src: feed.link,
+                thumbnail: feed.thumbnail,
+                type: feed.type }
             })
             itemsPerTopic[name] = feeds
           }

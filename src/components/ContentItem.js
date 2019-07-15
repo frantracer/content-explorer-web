@@ -6,7 +6,12 @@ class ContentItem extends Component {
     if (this.props.type === 'youtube') {
       return (
         <figure className="grid-item">
-          <iframe title={this.props.title} width="100%" src={this.props.src} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
+          <a href={this.props.src} target="_blank" rel="noopener noreferrer">
+            <img className="grid-img" alt={this.props.title} src={this.props.thumbnail}/>
+          </a>
+          <div style={{ width: "100%", height: "60px" }}>
+            <p><b>{this.props.title}</b></p>
+          </div>
         </figure>
       );
     } else if (this.props.type === 'image') {
