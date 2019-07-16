@@ -23,7 +23,7 @@ export const loadContentItems = () => {
     ).then(
       response => {
         // Parse API response
-        const items = response.data.items
+        const items = response.data.data.items
 
         const topics = items.map( item => item.name )
 
@@ -75,10 +75,11 @@ export const validateGoogleCode = (code) => {
       }
     ).then(
       response => {
+        const data = response.data.data
         const credentials = {
-          sid: response.data.sid,
-          picture_url: response.data.picture_url,
-          name: response.data.name
+          sid: data.sid,
+          picture_url: data.picture_url,
+          name: data.name
         }
         dispatch(loadCredentials(credentials))
         dispatch(loadContentItems())
