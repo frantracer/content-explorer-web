@@ -4,6 +4,8 @@
   "license": "MIT",
   "homepage": ".",
   "devDependencies": {
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "react-scripts": "^3.0.1"
   },
   "dependencies": {
@@ -21,7 +23,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --verbose",
     "predeploy": "npm run build",
     "deploy": "echo Pending"
   },
