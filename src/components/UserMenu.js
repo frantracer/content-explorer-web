@@ -14,10 +14,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    loadContentItems : () => { dispatch(loadContentItems()) },
-    unloadContentItems : () => { dispatch(unloadContentItems()) },
-    validateGoogleCode : (code) => { dispatch(validateGoogleCode(code)) },
-    loadCredentials : (credentials) => { dispatch(loadCredentials(credentials)) }
+    loadContentItems: () => { dispatch(loadContentItems()) },
+    unloadContentItems: () => { dispatch(unloadContentItems()) },
+    validateGoogleCode: (code) => { dispatch(validateGoogleCode(code)) },
+    loadCredentials: (credentials) => { dispatch(loadCredentials(credentials)) }
   }
 }
 
@@ -41,7 +41,7 @@ class UserMenu extends Component {
   logoutSession = (response) => {
     console.log("Logout Success");
     this.props.unloadContentItems();
-    this.props.loadCredentials({sid: null, picture_url: null, name: null});
+    this.props.loadCredentials({ sid: null, picture_url: null, name: null });
   }
 
   render() {
@@ -49,7 +49,7 @@ class UserMenu extends Component {
     let button;
     let text;
     let image;
-    if(this.props.credentials.name === null) {
+    if (this.props.credentials.name === null) {
       button =
         <GoogleLogin
           clientId={clientId}

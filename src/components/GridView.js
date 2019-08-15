@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ContentItem from './ContentItem.js';
+import ContentItem from './ContentItem/ContentItem.js';
 
 class GridView extends Component {
 
@@ -9,8 +9,8 @@ class GridView extends Component {
         <h2>{this.props.topic}</h2>
         <div className="grid">
           {
-            this.props.items.map( (item, index) => {
-              return <ContentItem key={index} title={item.title} src={item.src} type={item.type} thumbnail={item.thumbnail}/>
+            this.props.items.map((item, index) => {
+              return <ContentItem key={index} title={item.title} src={item.src} type={item.type} thumbnail={item.thumbnail} />
             })
           }
         </div>
