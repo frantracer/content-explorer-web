@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { GoogleLogin } from 'react-google-login';
-import { loadContentItems, unloadContentItems, loadCredentials, validateGoogleCode } from '../redux/actions/actions.js';
+import { loadContentItems, unloadContentItems, loadCredentials, validateGoogleCode, logout } from '../redux/actions/actions.js';
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
 
@@ -17,13 +17,18 @@ const mapDispatchToProps = dispatch => {
     loadContentItems : () => { dispatch(loadContentItems()) },
     unloadContentItems : () => { dispatch(unloadContentItems()) },
     validateGoogleCode : (code) => { dispatch(validateGoogleCode(code)) },
+    logout : () => { dispatch(logout()) },
     loadCredentials : (credentials) => { dispatch(loadCredentials(credentials)) }
   }
 }
 
 class UserMenu extends Component {
 
-  googleLoginSuccess = (response) => {
+  componentDidMount() {
+    this.props.validateGoogleCode(null);
+  }
+
+  googleLoginSuccess = (response) => {    
     console.log("Login Success");
 
     console.log(response);
@@ -40,8 +45,7 @@ class UserMenu extends Component {
 
   logoutSession = (response) => {
     console.log("Logout Success");
-    this.props.unloadContentItems();
-    this.props.loadCredentials({sid: null, picture_url: null, name: null});
+    this.props.logout();
   }
 
   render() {

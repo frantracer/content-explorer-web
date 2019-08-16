@@ -1,7 +1,8 @@
 const axios = require('axios');
 const connection = axios.create({
   baseURL: process.env.REACT_APP_SERVER_ADDRESS,
-  timeout: 5000
+  timeout: 10000,
+  withCredentials: true
 });
 
 export const setContentItems = (topics, itemsPerTopic) => {
@@ -10,15 +11,12 @@ export const setContentItems = (topics, itemsPerTopic) => {
 
 export const loadContentItems = () => {
 
-  return function (dispatch, getState) {
+  return function (dispatch) {
 
     return connection.request(
       {
         url: '/contentmarks',
-        method: 'get',
-        headers: {
-          'sid': getState().auth.credentials.sid
-        }
+        method: 'get'
       }
     ).then(
       response => {
@@ -36,7 +34,8 @@ export const loadContentItems = () => {
                 title: feed.title,
                 src: feed.link,
                 thumbnail: feed.thumbnail,
-                type: feed.type }
+                type: feed.type
+              }
             })
             itemsPerTopic[name] = feeds
           }
@@ -83,6 +82,23 @@ export const validateGoogleCode = (code) => {
         }
         dispatch(loadCredentials(credentials))
         dispatch(loadContentItems())
+      },
+      error => console.log('An error occurred.', error)
+    );
+  }
+}
+
+export const logout = () => {
+  return function (dispatch) {
+    return connection.request(
+      {
+        url: '/logout',
+        method: 'post'
+      }
+    ).then(
+      response => {
+        dispatch(unloadContentItems())
+        dispatch(loadCredentials({sid: null, picture_url: null, name: null}))
       },
       error => console.log('An error occurred.', error)
     );
