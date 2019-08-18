@@ -23,7 +23,7 @@ export const loadContentItems = () => {
         // Parse API response
         const items = response.data.data.items
 
-        const topics = items.map( item => item.name )
+        const topics = items.map( item => { return { "id": item.id, "name": item.name } } )
 
         var itemsPerTopic = {}
         items.forEach(
@@ -60,6 +60,41 @@ export const setSelectedTopic = (newTopic) => {
 
 export const loadCredentials = (credentials) => {
   return { type: 'UPDATE_CREDENTIALS', credentials: credentials };
+}
+
+export const createNewTopic = (newTopic) => {
+  return function (dispatch) {
+    return connection.request(
+      {
+        url: '/contentmarks',
+        method: 'post',
+        data: {
+          name: newTopic
+        }
+      }
+    ).then(
+      response => {
+        dispatch(loadContentItems())
+      },
+      error => console.log('An error occurred.', error)
+    );
+  }
+}
+
+export const deleteTopic = (topic) => {
+  return function (dispatch) {
+    return connection.request(
+      {
+        url: `/contentmarks/${topic.id}`,
+        method: 'delete'
+      }
+    ).then(
+      response => {
+        dispatch(loadContentItems())
+      },
+      error => console.log('An error occurred.', error)
+    );
+  }
 }
 
 export const validateGoogleCode = (code) => {

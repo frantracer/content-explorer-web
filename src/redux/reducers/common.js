@@ -9,7 +9,7 @@ export default (state = defaultState, action) => {
     case 'UPDATE_CONTENT':
       return {
         ...state,
-        topics: (action.topics.length > 0 ? ["Summary"].concat(action.topics) : []),
+        topics: (action.topics.length > 0 ? [{name: "Summary", id: null }].concat(action.topics) : []),
         itemsPerTopic: action.itemsPerTopic
       }
     case 'UPDATE_SELECTED_TOPIC':

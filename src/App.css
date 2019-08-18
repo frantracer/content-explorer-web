@@ -41,6 +41,53 @@
 .sidebar {
   width: var(--sidebar-width);
   background-color: lightgrey;
+  height: 100%;
+  position: fixed!important;
+  z-index: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-item {
+  padding: 0px;
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebar-item-title {
+  text-align: left;
+  flex: 1 1 auto;
+}
+
+.sidebar-item-setting {
+  text-align: center;
+  flex: 0 0 40px;
+}
+
+.sidebar-button {
+  background-color: lightgrey;
+  border: none;
+  padding: 10px 10px;
+  font-size: 14px;
+  text-decoration:none; 
+}
+
+.sidebar-button:hover {
+  background-color: grey;
+  cursor: pointer;
+}
+
+.sidebar-button#newTopicButton {
+  background-color: rgb(184, 184, 184);
+  justify-content: center;
+  font-size: 26px;
+  margin-top: auto;
+  width: 100%;
+}
+
+.sidebar-button#newTopicButton:hover {
+  background-color: grey;
 }
 
 .main-view {
@@ -54,4 +101,29 @@ figure.menu-logo {
 
 figure.menu-logo > img {
   width: 50%;
+}
+
+.modal-dialog {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+  transition: opacity 400ms ease-in;
+  
+  opacity: 0;
+	pointer-events: none;
+}
+
+.modal-dialog > div {
+	width: 50%;
+	margin: 10% auto;
+	padding: 20px 20px 20px 20px;
+	border-radius: 10px;
+	background: #fff;
 }
