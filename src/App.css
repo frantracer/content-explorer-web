@@ -1,15 +1,22 @@
 :root {
-  --sidebar-width: 20%;
+  --sidebar-width: 200px;
 }
 
-@media (min-width: 300px) {
+@media (min-width: 400px) {
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 550px) {
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -20,6 +27,13 @@
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   }
 }
 
