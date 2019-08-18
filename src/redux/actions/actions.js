@@ -5,8 +5,8 @@ const connection = axios.create({
   withCredentials: true
 });
 
-export const setContentItems = (topics, itemsPerTopic) => {
-  return { type: 'UPDATE_CONTENT', topics : topics, itemsPerTopic: itemsPerTopic };
+export const setContentItems = (topics) => {
+  return { type: 'UPDATE_CONTENT', topics : topics };
 }
 
 export const loadContentItems = () => {
@@ -23,25 +23,25 @@ export const loadContentItems = () => {
         // Parse API response
         const items = response.data.data.items
 
-        const topics = items.map( item => { return { "id": item.id, "name": item.name } } )
-
-        var itemsPerTopic = {}
-        items.forEach(
-          item => {
-            let name = item.name
-            let feeds = item.feeds.map((feed) => {
-              return { 
+        var topics = items.map(item => {
+          return {
+            "id": item.id,
+            "name": item.name,
+            "feeds": item.feeds.map((feed) => {
+              return {
                 title: feed.title,
                 src: feed.link,
                 thumbnail: feed.thumbnail,
                 type: feed.type
               }
             })
-            itemsPerTopic[name] = feeds
           }
-        )
+        })
 
-        dispatch(setContentItems(topics, itemsPerTopic))
+        const summary = {"id": null, name: "Summary", feeds: []}
+        topics = [summary].concat(topics)
+
+        dispatch(setContentItems(topics))
       },
       error => console.log('An error occurred.', error)
     );
@@ -51,11 +51,11 @@ export const loadContentItems = () => {
 }
 
 export const unloadContentItems = () => {
-  return setContentItems([], {});
+  return setContentItems([]);
 }
 
-export const setSelectedTopic = (newTopic) => {
-  return { type: 'UPDATE_SELECTED_TOPIC', newTopic: newTopic };
+export const setSelectedTopic = (newTopicIndex) => {
+  return { type: 'UPDATE_SELECTED_TOPIC', newTopicIndex: newTopicIndex };
 }
 
 export const loadCredentials = (credentials) => {

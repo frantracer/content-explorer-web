@@ -8,6 +8,7 @@ import logo from '../images/logo.png';
 const mapStateToProps = state => {
   return {
     topics: state.common.topics,
+    topicSelectedIndex: state.common.topicSelectedIndex,
     credentials: state.auth.credentials
   }
 };
@@ -93,8 +94,8 @@ class MarkersMenu extends Component {
             this.props.topics.map((topic, index) => {
                 return (
                   <div key={index} className="sidebar-item">
-                    <button className="sidebar-button sidebar-item-title" onClick={() => { return this.props.selectTopic(topic.name) }}>
-                    {topic.name}
+                    <button className="sidebar-button sidebar-item-title" onClick={() => { return this.props.selectTopic(index) }}>
+                    { (index === this.props.topicSelectedIndex) ? <b>{topic.name}</b> : topic.name }
                     </button>
                     <button className="sidebar-button sidebar-item-setting" onClick={() => { return this.props.deleteTopic(topic) }}>-</button>
                   </div>

@@ -4,24 +4,35 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
   return {
-    topicSelected: state.common.topicSelected,
-    itemsPerTopic: state.common.itemsPerTopic
+    topics: state.common.topics,
+    topicSelectedIndex: state.common.topicSelectedIndex,
+    credentials: state.auth.credentials
   }
 };
 
+const MAX_ITEMS_IN_SUMMARY = 6;
+
 class ContentView extends Component {
+
+  gridViews() {
+    if(this.props.credentials) {
+      if(this.props.topicSelectedIndex === 0) {
+        return this.props.topics.slice(1).map((topic, index) => {
+          return <GridView key={index} topic={topic.name} items={topic.feeds.slice(0,MAX_ITEMS_IN_SUMMARY)}/>
+        })
+      } else {
+        var topic = this.props.topics[this.props.topicSelectedIndex]
+        return <GridView topic={topic.name} items={topic.feeds}/>
+      }
+    } else {
+      return
+    }
+  }
 
   render() {
     return (
       <div>
-          {
-            Object.keys(this.props.itemsPerTopic)
-            .filter((topic) => (this.props.topicSelected === "Summary" || this.props.topicSelected === topic))
-            .map((topic, index) => {
-              let items = this.props.itemsPerTopic[topic]
-              return <GridView key={index} topic={topic} items={items}/>
-            })
-          }
+          { this.gridViews() }
       </div>
     );
   }

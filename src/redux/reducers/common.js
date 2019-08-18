@@ -1,7 +1,6 @@
 const defaultState = {
-  topicSelected: "Summary",
-  topics: [],
-  itemsPerTopic : {}
+  topicSelectedIndex: 0,
+  topics: []
 };
 
 export default (state = defaultState, action) => {
@@ -9,13 +8,12 @@ export default (state = defaultState, action) => {
     case 'UPDATE_CONTENT':
       return {
         ...state,
-        topics: (action.topics.length > 0 ? [{name: "Summary", id: null }].concat(action.topics) : []),
-        itemsPerTopic: action.itemsPerTopic
+        topics: action.topics
       }
     case 'UPDATE_SELECTED_TOPIC':
       return {
         ...state,
-        topicSelected: action.newTopic
+        topicSelectedIndex: action.newTopicIndex
       }
     default:
       console.log("Unknown Common action")
