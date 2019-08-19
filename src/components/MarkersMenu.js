@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { createNewTopic, deleteTopic, setSelectedTopic } from '../redux/actions/actions.js';
+import { loadContentItems, loadSubscriptions, createNewTopic, deleteTopic, setSelectedTopic, assignSubscription, removeSubscription } from '../redux/actions/actions.js';
 
 import logo from '../images/logo.png';
 
 const mapStateToProps = state => {
   return {
     topics: state.common.topics,
+    subscriptions: state.common.subscriptions,
     topicSelectedIndex: state.common.topicSelectedIndex,
     credentials: state.auth.credentials
   }
@@ -15,9 +16,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    loadContentItems: () => { dispatch(loadContentItems()) },
+    loadSubscriptions: () => { dispatch(loadSubscriptions()) },
     selectTopic: (topic) => { dispatch(setSelectedTopic(topic)) },
     createTopic: (topic) => { dispatch(createNewTopic(topic)) },
-    deleteTopic: (topic) => { dispatch(deleteTopic(topic)) }
+    deleteTopic: (topic) => { dispatch(deleteTopic(topic)) },
+    assignSubscription: (topic, subscription) => { dispatch(assignSubscription(topic, subscription)) },
+    removeSubscription: (topic, subscription) => { dispatch(removeSubscription(topic, subscription)) }
   }
 }
 
@@ -26,9 +31,15 @@ class MarkersMenu extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { newTopicName : "" }
+    this.state = {
+      newTopicName : "",
+      managedTopicIndex : 0,
+      subscriptionsFilter : ""
+    }
 
     this.handleNewTopicText = this.handleNewTopicText.bind(this);
+    this.subscriptionModalWindow = this.subscriptionModalWindow.bind(this);
+    this.handleSubscriptionFilterText = this.handleSubscriptionFilterText.bind(this);
   }
 
   createTopicButton() {
@@ -83,6 +94,56 @@ class MarkersMenu extends Component {
     }
   }
 
+  manageSubscriptionCheckbox(event, topic, subscription) {
+    if(event.target.checked) {
+      this.props.assignSubscription(topic, subscription)
+    } else {
+      this.props.removeSubscription(topic, subscription)
+    }
+  }
+
+  handleSubscriptionFilterText(event) {
+    this.setState({subscriptionsFilter: event.target.value});
+  }
+
+  subscriptionModalWindow() {
+    if(this.props.credentials.sid) {
+      var subscriptions = this.props.subscriptions
+      var currentTopic = this.props.topics[this.state.managedTopicIndex] || {}
+
+      return (
+        <div id="subscriptionsModalDialog" className="modal-dialog">
+          <div>
+            <h2>{currentTopic.name}</h2>
+            <input type="text" value={this.state.subscriptionsFilter} placeholder="Filter" onChange={this.handleSubscriptionFilterText} className="search-bar"/>
+            <form className="selection-window">
+              {
+                subscriptions.filter(subscription => { return subscription.name.toLowerCase().indexOf(this.state.subscriptionsFilter.toLowerCase()) !== -1 })
+                .map((subscription, index) => {
+                  return (
+                    <div key={currentTopic.id + index} className="checkbox">
+                      <label>
+                        <input onChange={(event) => this.manageSubscriptionCheckbox(event, currentTopic, subscription)}
+                          type="checkbox" checked={ (currentTopic.subscriptions_ids.indexOf(subscription.id) !== -1 ) ? true : false }/>
+                          { subscription.name }
+                      </label>
+                    </div>
+                  )
+                })
+              }
+            </form>
+            <button onClick={() => {
+              this.setState({subscriptionsFilter: ""});
+              this.hideModalDialog("subscriptionsModalDialog");
+            }}>Done</button>
+          </div>
+        </div>
+      )
+    } else {
+      return
+    }
+  }
+
   render() {
     return (
       <div>
@@ -97,6 +158,14 @@ class MarkersMenu extends Component {
                     <button className="sidebar-button sidebar-item-title" onClick={() => { return this.props.selectTopic(index) }}>
                     { (index === this.props.topicSelectedIndex) ? <b>{topic.name}</b> : topic.name }
                     </button>
+                    <button className="sidebar-button sidebar-item-setting" onClick={() => {
+                      this.setState({managedTopicIndex : index});
+                      this.props.loadSubscriptions();
+                      this.displayModalDialog("subscriptionsModalDialog")
+                      }}
+                    >
+                      s
+                    </button>
                     <button className="sidebar-button sidebar-item-setting" onClick={() => { return this.props.deleteTopic(topic) }}>-</button>
                   </div>
                 )
@@ -106,6 +175,7 @@ class MarkersMenu extends Component {
           { this.createTopicButton() }
         </div>
         { this.createTopicModalWindow() }
+        { this.subscriptionModalWindow() }
       </div>
     );
   }

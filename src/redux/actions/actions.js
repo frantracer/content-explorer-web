@@ -27,6 +27,7 @@ export const loadContentItems = () => {
           return {
             "id": item.id,
             "name": item.name,
+            "subscriptions_ids": item.subscriptions,
             "feeds": item.feeds.map((feed) => {
               return {
                 title: feed.title,
@@ -62,6 +63,27 @@ export const loadCredentials = (credentials) => {
   return { type: 'UPDATE_CREDENTIALS', credentials: credentials };
 }
 
+export const setSubscriptions = (subscriptions) => {
+  return { type: 'UPDATE_SUBSCRIPTIONS', subscriptions: subscriptions };
+}
+
+export const loadSubscriptions = () => {
+  return function (dispatch) {
+    return connection.request(
+      {
+        url: '/subscriptions',
+        method: 'get'
+      }
+    ).then(
+      response => {
+        var subscriptions = response.data.data.items
+        dispatch(setSubscriptions(subscriptions))
+      },
+      error => console.log('An error occurred.', error)
+    );
+  }
+}
+
 export const createNewTopic = (newTopic) => {
   return function (dispatch) {
     return connection.request(
@@ -92,6 +114,38 @@ export const deleteTopic = (topic) => {
       response => {
         dispatch(loadContentItems())
       },
+      error => console.log('An error occurred.', error)
+    );
+  }
+}
+
+export const assignSubscription = (topic, subscription) => {
+  console.log(subscription)
+  return function (dispatch) {
+    return connection.request(
+      {
+        url: `/contentmarks/${topic.id}/subscriptions`,
+        method: 'post',
+        data: {
+          "subscription_id" : subscription.id
+        }
+      }
+    ).then(
+      response => { dispatch(loadContentItems()) },
+      error => console.log('An error occurred.', error)
+    );
+  }
+}
+
+export const removeSubscription = (topic, subscription) => {
+  return function (dispatch) {
+    return connection.request(
+      {
+        url: `/contentmarks/${topic.id}/subscriptions/${subscription.id}`,
+        method: 'delete'
+      }
+    ).then(
+      response => { dispatch(loadContentItems()) },
       error => console.log('An error occurred.', error)
     );
   }
