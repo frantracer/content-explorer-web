@@ -159,7 +159,6 @@ class MarkersMenu extends Component {
                     </button>
                     <button className="sidebar-button sidebar-item-setting" onClick={() => {
                       this.setState({managedTopicIndex : index});
-                      this.props.loadSubscriptions();
                       this.displayModalDialog("subscriptionsModalDialog")
                       }}
                     >
