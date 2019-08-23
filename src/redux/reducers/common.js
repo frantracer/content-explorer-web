@@ -1,7 +1,6 @@
 const defaultState = {
   topicSelectedIndex: 0,
-  topics: [],
-  subscriptions: []
+  topics: []
 };
 
 export default (state = defaultState, action) => {
@@ -15,11 +14,6 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         topicSelectedIndex: action.newTopicIndex
-      }
-    case 'UPDATE_SUBSCRIPTIONS':
-      return {
-        ...state,
-        subscriptions: action.subscriptions
       }
     default:
       console.log("Unknown Common action")

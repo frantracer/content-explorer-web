@@ -5,19 +5,25 @@ class ContentItem extends Component {
   render() {
     if (this.props.type === 'youtube') {
       return (
-        <figure className="grid-item">
+        <div className="grid-item">
           <a href={this.props.src} target="_blank" rel="noopener noreferrer">
-            <img className="grid-img" alt={this.props.title} src={this.props.thumbnail}/>
+            <img className="grid-item-image" alt={this.props.title} src={this.props.thumbnail}/>
           </a>
-          <div style={{ width: "100%", height: "60px" }}>
-            <p><b>{this.props.title}</b></p>
+          <div className="grid-item-title">
+            {this.props.title}
           </div>
-        </figure>
+          <div className="grid-item-text">
+            <img className="grid-item-logo" alt={this.props.sub_name} src={this.props.sub_thumbnail}/>
+            <a href={this.props.sub_src} target="_blank" rel="noopener noreferrer">
+              {this.props.sub_name}
+            </a>
+          </div>
+        </div>
       );
     } else if (this.props.type === 'image') {
       return (
         <figure className="grid-item">
-          <img className="grid-img" alt={this.props.title} src={this.props.src}/>
+          <img className="grid-item-image" alt={this.props.title} src={this.props.src}/>
         </figure>
       );
     } else {

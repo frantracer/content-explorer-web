@@ -5,6 +5,8 @@ const connection = axios.create({
   withCredentials: true
 });
 
+// TOPICS
+
 export const setContentItems = (topics) => {
   return { type: 'UPDATE_CONTENT', topics : topics };
 }
@@ -33,13 +35,14 @@ export const loadContentItems = () => {
                 title: feed.title,
                 src: feed.link,
                 thumbnail: feed.thumbnail,
-                type: feed.type
+                type: feed.type,
+                subscription_id: feed.subscription
               }
             })
           }
         })
 
-        const summary = {"id": null, name: "Summary", feeds: []}
+        const summary = {"id": null, name: "Summary", feeds: [], subscriptions_ids : []}
         topics = [summary].concat(topics)
 
         dispatch(setContentItems(topics))
@@ -57,31 +60,6 @@ export const unloadContentItems = () => {
 
 export const setSelectedTopic = (newTopicIndex) => {
   return { type: 'UPDATE_SELECTED_TOPIC', newTopicIndex: newTopicIndex };
-}
-
-export const loadCredentials = (credentials) => {
-  return { type: 'UPDATE_CREDENTIALS', credentials: credentials };
-}
-
-export const setSubscriptions = (subscriptions) => {
-  return { type: 'UPDATE_SUBSCRIPTIONS', subscriptions: subscriptions };
-}
-
-export const loadSubscriptions = () => {
-  return function (dispatch) {
-    return connection.request(
-      {
-        url: '/subscriptions',
-        method: 'get'
-      }
-    ).then(
-      response => {
-        var subscriptions = response.data.data.items
-        dispatch(setSubscriptions(subscriptions))
-      },
-      error => console.log('An error occurred.', error)
-    );
-  }
 }
 
 export const createNewTopic = (newTopic) => {
@@ -151,6 +129,43 @@ export const removeSubscription = (topic, subscription) => {
   }
 }
 
+// SUBSCRIPTIONS
+
+export const setSubscriptions = (subscriptions, subscriptionsIndexes) => {
+  return { 
+    type: 'UPDATE_SUBSCRIPTIONS',
+    subscriptions: subscriptions,
+    subscriptionsIndexes: subscriptionsIndexes
+  };
+}
+
+export const loadSubscriptions = () => {
+  return function (dispatch) {
+    return connection.request(
+      {
+        url: '/subscriptions',
+        method: 'get'
+      }
+    ).then(
+      response => {
+        var subscriptions = response.data.data.items
+        var subscriptionsIndexes = {}
+        subscriptions.forEach((subscription, index) => {
+          subscriptionsIndexes[subscription.id] = index
+        });
+        dispatch(setSubscriptions(subscriptions, subscriptionsIndexes))
+      },
+      error => console.log('An error occurred.', error)
+    );
+  }
+}
+
+// CREDENTIALS
+
+export const loadCredentials = (credentials) => {
+  return { type: 'UPDATE_CREDENTIALS', credentials: credentials };
+}
+
 export const validateGoogleCode = (code) => {
   return function (dispatch) {
     return connection.request(
@@ -170,6 +185,7 @@ export const validateGoogleCode = (code) => {
           name: data.name
         }
         dispatch(loadCredentials(credentials))
+        dispatch(loadSubscriptions())
         dispatch(loadContentItems())
       },
       error => console.log('An error occurred.', error)

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { loadContentItems, loadSubscriptions, createNewTopic, deleteTopic, setSelectedTopic, assignSubscription, removeSubscription } from '../redux/actions/actions.js';
+import { loadContentItems, createNewTopic, deleteTopic, setSelectedTopic, assignSubscription, removeSubscription } from '../redux/actions/actions.js';
 
 import logo from '../images/logo.png';
 
 const mapStateToProps = state => {
   return {
     topics: state.common.topics,
-    subscriptions: state.common.subscriptions,
+    subscriptions: state.subs.subscriptions,
     topicSelectedIndex: state.common.topicSelectedIndex,
     credentials: state.auth.credentials
   }
@@ -17,7 +17,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loadContentItems: () => { dispatch(loadContentItems()) },
-    loadSubscriptions: () => { dispatch(loadSubscriptions()) },
     selectTopic: (topic) => { dispatch(setSelectedTopic(topic)) },
     createTopic: (topic) => { dispatch(createNewTopic(topic)) },
     deleteTopic: (topic) => { dispatch(deleteTopic(topic)) },
@@ -107,10 +106,10 @@ class MarkersMenu extends Component {
   }
 
   subscriptionModalWindow() {
-    if(this.props.credentials.sid) {
-      var subscriptions = this.props.subscriptions
-      var currentTopic = this.props.topics[this.state.managedTopicIndex] || {}
+    var subscriptions = this.props.subscriptions
+    var currentTopic = this.props.topics[this.state.managedTopicIndex]
 
+    if(this.props.credentials.sid && currentTopic != null) {
       return (
         <div id="subscriptionsModalDialog" className="modal-dialog">
           <div>
@@ -140,7 +139,7 @@ class MarkersMenu extends Component {
         </div>
       )
     } else {
-      return
+      return <div id="subscriptionsModalDialog" className="modal-dialog"/>
     }
   }
 
