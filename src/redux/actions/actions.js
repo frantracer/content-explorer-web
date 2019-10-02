@@ -209,3 +209,9 @@ export const logout = () => {
     );
   }
 }
+
+// FILTERS
+
+export const setTextFilter = (text) => {
+  return { type: 'UPDATE_TEXT_FILTER', text: text };
+}

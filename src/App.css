@@ -37,6 +37,10 @@
   }
 }
 
+.filter-menu {
+  padding: 10px;
+}
+
 .grid-title {
   font-weight: bold;
   font-size: 30px;
