@@ -1,4 +1,10 @@
-# Prepare project
+# Content Explorer
+
+This project is a website to categorize and recommend youtube videos to your friends.
+
+<img src='images/example.png' width='500'/>
+
+## Prepare project
 
 Download project
 
@@ -18,7 +24,7 @@ Create directory with the following files:
 Install docker (https://docs.docker.com/install/)
 
 
-# Development environment
+## Development environment
 
 Run the following command and follow instructions:
 
@@ -31,7 +37,7 @@ The web will be available at:
 https://localhost:8443
 
 
-# Production environment
+## Production environment
 
 Run the following command:
 
