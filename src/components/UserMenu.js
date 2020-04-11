@@ -28,7 +28,7 @@ class UserMenu extends Component {
     this.props.validateGoogleCode(null);
   }
 
-  googleLoginSuccess = (response) => {    
+  googleLoginSuccess = (response) => {
     console.log("Login Success");
 
     console.log(response);
@@ -65,14 +65,37 @@ class UserMenu extends Component {
           scope="https://www.googleapis.com/auth/youtube.readonly"
         />;
     } else {
-      text = "Welcome " + this.props.credentials.name + "!";
-      button = <button onClick={this.logoutSession}>Logout</button>;
-      image = <img src={this.props.credentials.picture_url} alt="" width="50" height="50" align="right"></img>
+      text = <div className="profile-text">{"Logged as " + this.props.credentials.name + "!"}</div>
+      button = <div><button className="btn-default" onClick={this.logoutSession}>Logout</button></div>
+      image = <div className="profile-image"><img src={this.props.credentials.picture_url} alt="" /></div>
     }
 
     return (
       <div>
-        {button} {text} {image}
+        <nav class="nav-menu">
+          <ul>
+            <li>
+              <a href="#contentmarks">Contentmarks</a>
+            </li>
+            <li>
+              <a href="#subscriptions">Subscriptions</a>
+            </li>
+            <li>
+              <a href="#people">People</a>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              {text}
+            </li>
+            <li>
+              {image}
+            </li>
+            <li>
+              {button}
+            </li>
+          </ul>
+        </nav>
       </div>
     );
   }

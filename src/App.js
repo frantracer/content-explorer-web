@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MarkersMenu from "./components/MarkersMenu.js"
 import MainView from "./components/MainView.js"
 
-import "./App.css";
+import "./scss/app.scss";
 
 class App extends Component {
   render() {

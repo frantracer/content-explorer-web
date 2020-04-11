@@ -7,7 +7,7 @@ class MainView extends Component {
   render() {
     return (
       <div className="main-view">
-        <div>
+        <div className="sticky-top">
           <UserMenu />
           <FilterMenu />
         </div>

@@ -119,4 +119,5 @@ if (env == "DEV"):
 Run the following commands:\n\
 sudo docker start -i %s\n\
 npm install\n\
+less-watch-compiler src/less/ src/ --main-file app.less &\n\
 npm start\n" % (web_container_name,)

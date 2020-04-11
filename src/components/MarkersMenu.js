@@ -44,7 +44,7 @@ class MarkersMenu extends Component {
   createTopicButton() {
     if(this.props.credentials.sid) {
       return (
-      <button id="newTopicButton" onClick={() => this.displayModalDialog("newTopicModalDialog")} className="sidebar-item sidebar-button">
+      <button className="btn-default" id="newTopicButton" onClick={() => this.displayModalDialog("newTopicModalDialog")} className="sidebar-item sidebar-button">
         + New
       </button>
       )
@@ -76,11 +76,11 @@ class MarkersMenu extends Component {
           <div>
             <input type="text" value={this.state.newTopicName} onChange={this.handleNewTopicText}/>
             <br/>
-            <button onClick={() => {
+            <button className="btn-default" onClick={() => {
               this.setState({newTopicName: ""})
               this.hideModalDialog("newTopicModalDialog");
             }}>Cancel</button>
-            <button onClick={() => {
+            <button className="btn-default" onClick={() => {
               this.props.createTopic(this.state.newTopicName);
               this.setState({newTopicName: ""});
               this.hideModalDialog("newTopicModalDialog");
@@ -131,7 +131,7 @@ class MarkersMenu extends Component {
                 })
               }
             </form>
-            <button onClick={() => {
+            <button className="btn-default" onClick={() => {
               this.setState({subscriptionsFilter: ""});
               this.hideModalDialog("subscriptionsModalDialog");
             }}>Done</button>

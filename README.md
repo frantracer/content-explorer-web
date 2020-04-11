@@ -4,6 +4,8 @@ This project is a website to categorize and recommend youtube videos to your fri
 
 <img src='images/example.png' width='500'/>
 
+# Installation
+
 ## Prepare project
 
 Download project
