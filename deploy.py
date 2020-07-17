@@ -21,12 +21,12 @@ web_container_name = ""
 # FUNCTIONS
 
 def perror(message):
-    print >> sys.stderr, "[ERROR] " + message
+    print("[ERROR] " + message, file=sys.stderr)
     exit(1)
 
 def run_command(cmd):
     if (dry_run):
-        print " ".join(cmd)
+        print(" ".join(cmd))
     else:
         try:
             subprocess.check_call(cmd, stderr=subprocess.STDOUT)
@@ -42,10 +42,10 @@ def count_images(image):
     return int(subprocess.check_output(["wc", "-l"], stdin=docker_images.stdout))
 
 def rebuild_web_container():
-    print "\n# WEB CONTAINER"
+    print("\n# WEB CONTAINER")
 
     # Remove containers
-    print "\n## REMOVE PREVIOUS CONTAINER\n"
+    print("\n## REMOVE PREVIOUS CONTAINER\n")
 
     ps_count = count_containers(web_container_name)
 
@@ -53,7 +53,7 @@ def rebuild_web_container():
         run_command(["sudo", "docker", "rm", "-f", web_container_name])
 
     # Remove images
-    print "\n## REMOVE PREVIOUS IMAGE\n"
+    print("\n## REMOVE PREVIOUS IMAGE\n")
 
     images_count = count_images(web_image_tag)
 
@@ -61,12 +61,12 @@ def rebuild_web_container():
         run_command(["sudo", "docker", "rmi", "-f", web_image_tag])
 
     # Create images
-    print "\n## BUILD NEW IMAGE\n"
+    print("\n## BUILD NEW IMAGE\n")
 
     run_command(["sudo", "docker", "build", "-t", web_image_tag, "."])
 
     # Create containers
-    print "\n## CREATE NEW CONTAINER\n"
+    print("\n## CREATE NEW CONTAINER\n")
 
     if(env == "DEV"):
         run_command(["sudo", "docker", "create", "-it", "-p", "8443:443",
@@ -115,9 +115,9 @@ rebuild_web_container()
 
 
 if (env == "DEV"):
-    print "\n\
+    print("\n\
 Run the following commands:\n\
 sudo docker start -i %s\n\
 npm install\n\
 less-watch-compiler src/less/ src/ --main-file app.less &\n\
-npm start\n" % (web_container_name,)
+npm start\n" % (web_container_name,))
